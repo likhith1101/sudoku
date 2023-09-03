@@ -1,0 +1,1 @@
+package com.sudoku.game.exception;

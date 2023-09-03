@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Solve Sudoku Puzzle</title>
+</head>
+<body>
+    <h1>Solve Sudoku Puzzle</h1>
+    
+    <!-- Display the Sudoku puzzle here (use Thymeleaf to fill in values) -->
+    <table>
+        <tr th:each="row, rowStat : ${puzzle}">
+            <td th:each="cell, colStat : ${row}">
+                <input type="number" th:field="*{puzzle[__${rowStat.index}__][__${colStat.index}__]}" min="1" max="9">
+            </td>
+        </tr>
+    </table>
+    
+    <br>
+    <button type="button" onclick="verifySudoku()">Verify!</button>
+    
+    <div th:if="${message}">
+        <p th:text="${message}"></p>
+    </div>
+</body>
+<script>
+    function verifySudoku() {
+    var puzzleMatrix = getPuzzleMatrix(); // Get the puzzle data from the HTML input fields
+    
+    // Implement Sudoku verification logic here
+    if (isSudokuValid(puzzleMatrix)) {
+        // Sudoku is valid
+        showMessage("Sudoku is solved correctly!");
+    } else {
+        // Sudoku is not valid
+        showMessage("Sudoku solution is incorrect.");
+    }
+}
+
+function getPuzzleMatrix() {
+    var puzzleMatrix = [];
+    
+    // Loop through the HTML input fields and construct the puzzle matrix
+    for (var row = 0; row < 9; row++) {
+        var rowData = [];
+        for (var col = 0; col < 9; col++) {
+            var cellValue = parseInt(document.getElementById("cell_" + row + "_" + col).value);
+            rowData.push(cellValue);
+        }
+        puzzleMatrix.push(rowData);
+    }
+    
+    return puzzleMatrix;
+}
+
+function isSudokuValid(matrix) {
+    // Check rows
+    for (var row = 0; row < 9; row++) {
+        var rowSet = new Set();
+        for (var col = 0; col < 9; col++) {
+            var cellValue = matrix[row][col];
+            
+            // Check for duplicates or invalid values (not in the range 1-9)
+            if (cellValue < 1 || cellValue > 9 || rowSet.has(cellValue)) {
+                return false; // Sudoku is not valid
+            }
+            
+            rowSet.add(cellValue);
+        }
+    }
+    
+    // Check columns
+    for (var col = 0; col < 9; col++) {
+        var colSet = new Set();
+        for (var row = 0; row < 9; row++) {
+            var cellValue = matrix[row][col];
+            
+            // Check for duplicates or invalid values (not in the range 1-9)
+            if (cellValue < 1 || cellValue > 9 || colSet.has(cellValue)) {
+                return false; // Sudoku is not valid
+            }
+            
+            colSet.add(cellValue);
+        }
+    }
+    
+    // Check 3x3 subgrids
+    for (var gridRow = 0; gridRow < 3; gridRow++) {
+        for (var gridCol = 0; gridCol < 3; gridCol++) {
+            var subgridSet = new Set();
+            for (var row = gridRow * 3; row < gridRow * 3 + 3; row++) {
+                for (var col = gridCol * 3; col < gridCol * 3 + 3; col++) {
+                    var cellValue = matrix[row][col];
+                    
+                    // Check for duplicates or invalid values (not in the range 1-9)
+                    if (cellValue < 1 || cellValue > 9 || subgridSet.has(cellValue)) {
+                        return false; // Sudoku is not valid
+                    }
+                    
+                    subgridSet.add(cellValue);
+                }
+            }
+        }
+    }
+    
+    // If all checks pass, the Sudoku is valid
+    return true;
+}
+
+
+function showMessage(message) {
+    var resultDiv = document.getElementById("resultDiv");
+    resultDiv.innerText = message;
+}
+
+</script>
+</html>

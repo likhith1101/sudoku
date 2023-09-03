@@ -1,0 +1,6 @@
+com/sudoku/game/GameApplication.class
+com/sudoku/game/exception/GlobalExceptionHandler.class
+com/sudoku/game/entity/SudokuSolution.class
+com/sudoku/game/entity/SudokuPuzzle.class
+com/sudoku/game/repository/SudokuPuzzleRepository.class
+com/sudoku/game/repository/SudokuSolutionRepository.class

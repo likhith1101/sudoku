@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Create Sudoku Puzzle</title>
+</head>
+<body>
+    <h1>Create Sudoku Puzzle</h1>
+    
+    <!-- Display the Sudoku puzzle here (use Thymeleaf to fill in values) -->
+    <table>
+        <tr th:each="row, rowStat : ${puzzle}">
+            <td th:each="cell, colStat : ${row}">
+                <input type="number" th:field="*{puzzle[__${rowStat.index}__][__${colStat.index}__]}" min="1" max="9">
+            </td>
+        </tr>
+    </table>
+    
+    <br>
+    <a href="/sudoku/solve/${puzzle.id}">Solve this puzzle</a>
+</body>
+</html>
